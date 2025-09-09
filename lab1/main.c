@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 
 int main(void) {
@@ -14,6 +15,8 @@ int main(void) {
     }
     double ln = 0;
     double x_pow = x;
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC, &start);
     for (long long i = 1; i <= n; i++) {
         if (i % 2 == 0) {
             ln -= x_pow / i;
@@ -22,6 +25,8 @@ int main(void) {
         }
         x_pow *= x;
     }
-    printf("%lf", ln);
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    printf("%lf\n", ln);
+    printf("%lf", end.tv_sec - start.tv_sec + (0.000000001 * (end.tv_nsec - start.tv_nsec)));
     return 0;
 }
