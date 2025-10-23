@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <time.h>
+
+
+int main(void) {
+    double x;
+    long long n;
+    if (scanf("%lf", &x) != 1) return -1;
+    if (scanf("%lld", &n) != 1) return -1;
+    if (x <= -1.0 || x > 1.0) {
+        return -2;
+    }
+    if (n < 1) {
+        return -3;
+    }
+    double ln = 0;
+    double x_pow = x;
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+    for (long long i = 1; i <= n; i++) {
+        if (i % 2 == 0) {
+            ln -= x_pow / i;
+        } else {
+            ln += x_pow / i;
+        }
+        x_pow *= x;
+    }
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    printf("%lf\n", ln);
+    printf("%lf\n", end.tv_sec - start.tv_sec + (0.000000001 * (end.tv_nsec - start.tv_nsec)));
+    struct timespec res;
+    clock_getres(CLOCK_MONOTONIC, &res);
+    printf("Resolution: %ld sec, %ld nsec\n", res.tv_sec, res.tv_nsec);
+    return 0;
+}
